@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musicplayer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="Music-Playerz">
+        <h2>Nduvho Mudau's <br>Classic Catalog</h2>
+        <img src="#" alt="captchaImage" class="cap-Image" id="findImage">
+        <h3 id="songName"></h3>
+        <audio id="audioPlayer" controls preload="auto">
+            <source src="songs/nduvho-fantasy-i-had.mp3" type="audio/mp3">
+        </audio>
+        <div class="controls">
+            <button class="prev-button" id="bwButton">&#9665;</button>
+            <button class="play-pause-button" id="playButton">&#9658;</button>
+            <button class="next-button" id="fwButton">&#9655;</button>
+        </div>
+    </div>
+
+    <script>
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playButton = document.getElementById('playButton');
+        const bwButton = document.getElementById('bwButton');
+        const fwButton = document.getElementById('fwButton');
+        const songNameE = document.getElementById('songName');
+        const findImageE = document.getElementById('findImage');
+
+        const musicFiles = [
+            {name: 'The Rise', src: 'songs/The Rise.mp3', image: 'image/pexels-curiosophotography-343683.jpg'},
+            {name: 'New Life', src: 'songs/New Life.mp3', image: 'image/pexels-joshsorenson-995301.jpg'},
+            {name: 'Sunrise', src: 'songs/Sunrise.mp3', image: 'image/pexels-thibault-trillet-44912-167491.jpg'},
+            {name: 'Fantasy I Had', src: 'songs/nduvho-fantasy-i-had.mp3', image: 'image/pexels-edotommo99-2034851.jpg'},
+        ];
+
+        let runningTrack = 0;
+        let alrdyPlaying = false;
+
+        function updateSongName() {
+            songNameE.textContent = musicFiles[runningTrack].name;
+            findImageE.src = musicFiles[runningTrack].image;
+        }
+
+        function PlayorPause() {
+            if (alrdyPlaying) {
+                audioPlayer.pause();
+                alrdyPlaying = false;
+                playButton.textContent = '\u25BA';
+            } else {
+                audioPlayer.play();
+                alrdyPlaying = true;
+                playButton.textContent = '\u275A\u275A';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            audioPlayer.src = musicFiles[runningTrack].src;
+            updateSongName();
+
+            playButton.addEventListener('click', () => {
+                PlayorPause();
+            });
+
+            fwButton.addEventListener('click', () => {
+                runningTrack = (runningTrack + 1) % musicFiles.length;
+                audioPlayer.src = musicFiles[runningTrack].src;
+                updateSongName();
+                audioPlayer.play();
+            });
+
+            bwButton.addEventListener('click', () => {
+                runningTrack = (runningTrack - 1 + musicFiles.length) % musicFiles.length;
+                audioPlayer.src = musicFiles[runningTrack].src;
+                updateSongName();
+                audioPlayer.play();
+            });
+        });
+    </script>
+</body>
+</html>
